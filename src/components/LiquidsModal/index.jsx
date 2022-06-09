@@ -8,27 +8,54 @@ import { Divider, FormLabel, TextField } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import { useSelector } from "react-redux";
-import { addLiquid, closeModal } from "../../store/slices/liquidsSlice";
+import {
+  addLiquid,
+  closeModal,
+  editLiquid,
+} from "../../store/slices/liquidsSlice";
 
 const LiquidsModal = () => {
   const initialValues = {
     liquidName: "",
     liquidDescription: "",
-    liquidCost: 0,
+    liquidCost: "",
   };
 
   const modalIsOpen = useSelector((state) => state.liquid.modalIsOpen);
   const dispatch = useDispatch();
   const handleClose = () => dispatch(closeModal());
+  const modalState = useSelector((state) => state.liquid.modalState);
+  const currentModalId = useSelector((state) => state.liquid.currentModalId);
 
   const formik = useFormik({
     initialValues: initialValues,
     onSubmit: (values, actions) => {
       handleClose();
-      dispatch(addLiquid({ id: uuidv4(), ...values }));
-      actions.resetForm({
-        values: initialValues,
-      });
+      if (modalState === "set") {
+        dispatch(addLiquid({ id: uuidv4(), ...values }));
+        actions.resetForm({
+          values: initialValues,
+        });
+      } else if (modalState === "edit") {
+        const setExistVal = () => {
+          let temp = {};
+          const { liquidCost, liquidDescription, liquidName } = values;
+          if (liquidCost) temp = { ...temp, liquidCost };
+          if (liquidDescription) temp = { ...temp, liquidDescription };
+          if (liquidName) temp = { ...temp, liquidName };
+          return temp;
+        };
+        const val = setExistVal();
+        console.log(val, val);
+        const result = {
+          id: currentModalId,
+          ...val,
+        };
+        dispatch(editLiquid(result));
+        actions.resetForm({
+          values: initialValues,
+        });
+      }
     },
   });
 

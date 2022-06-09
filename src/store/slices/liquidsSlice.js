@@ -3,6 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   liquidsList: [],
   modalIsOpen: false,
+  modalState: "",
+  currentModalId: "",
 };
 
 export const liquidSlice = createSlice({
@@ -12,11 +14,14 @@ export const liquidSlice = createSlice({
     addLiquid: (state, action) => {
       state.liquidsList.push(action.payload);
     },
-    openModal: (state) => {
+    openModal: (state, action) => {
       state.modalIsOpen = true;
+      state.modalState = action.payload;
     },
     closeModal: (state) => {
       state.modalIsOpen = false;
+      state.modalState = "";
+      state.currentModalId = "";
     },
     deleteLiquid: (state, action) => {
       state.liquidsList = state.liquidsList.filter(
@@ -27,6 +32,7 @@ export const liquidSlice = createSlice({
       const liquidIndex = state.liquidsList.findIndex(
         (item) => item.id === action.payload.id
       );
+      console.log(action.payload);
       state.liquidsList[liquidIndex] = {
         ...state.liquidsList[liquidIndex],
         ...action.payload,

@@ -3,15 +3,19 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Button,
   Checkbox,
   FormControlLabel,
 } from "@mui/material";
 import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { CostWrapper } from "./styles";
+import { openModal, setCurrentModalId } from "../../store/slices/liquidsSlice";
+import { CostWrapper, EditButtonWrapper } from "./styles";
 
-const LiquidList = ({ setIsChecked }) => {
+const AdminLiquidsList = ({ setIsChecked }) => {
   const dataList = useSelector((state) => state.liquid.liquidsList);
+  const dispatch = useDispatch();
 
   useEffect(() => {}, [dataList]);
 
@@ -23,6 +27,11 @@ const LiquidList = ({ setIsChecked }) => {
         prevState.filter((item) => item !== e.target.id)
       );
     }
+  };
+
+  const handleEditClick = () => (e) => {
+    dispatch(openModal("edit"));
+    dispatch(setCurrentModalId(e.target.id));
   };
 
   const printList = () => {
@@ -47,6 +56,16 @@ const LiquidList = ({ setIsChecked }) => {
           <AccordionDetails sx={{ fontFamily: "roboto" }}>
             {item.liquidDescription}
           </AccordionDetails>
+          <EditButtonWrapper>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={handleEditClick()}
+              id={item.id}
+            >
+              Edit
+            </Button>
+          </EditButtonWrapper>
         </Accordion>
       );
     });
@@ -55,4 +74,4 @@ const LiquidList = ({ setIsChecked }) => {
   return <div>{printList()}</div>;
 };
 
-export default LiquidList;
+export default AdminLiquidsList;

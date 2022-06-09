@@ -2,18 +2,50 @@ import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
+import { Button, Typography } from "@mui/material";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import AlertDialog from "../AlertDialog";
+import { Title, Wrapper } from "./styles";
+import AdminLiquidsList from "../AdminLiquidsList";
+import { deleteLiquid, openModal } from "../../store/slices/liquidsSlice";
+import LiquidsModal from "../LiquidsModal";
 
 const AdminPanel = () => {
   const auth = useAuth();
   let navigate = useNavigate();
-  const allData = useSelector((state) => state.liquid);
+  const dispatch = useDispatch();
+  const [isChecked, setIsChecked] = useState([]);
+  const dataList = useSelector((state) => state.liquid.liquidsList);
 
   useEffect(() => {
-    console.log(allData);
     if (!auth.isAuth) navigate("/login");
   }, []);
 
-  return <div>AdminPanel</div>;
+  const handleOpenModal = () => dispatch(openModal("set"));
+  const handleDeleteLiquid = () => dispatch(deleteLiquid(isChecked));
+
+  return (
+    <Wrapper>
+      <Title>
+        <Typography variant="h2" color={"#1976d2"}>
+          Liquid List
+        </Typography>
+      </Title>
+      <div>
+        <Button variant="contained" onClick={handleOpenModal} sx={{ mr: 3 }}>
+          Add liquid
+        </Button>
+        {dataList.length > 0 && isChecked.length > 0 ? (
+          <AlertDialog handleDeleteLiquid={handleDeleteLiquid} />
+        ) : null}
+      </div>
+      <LiquidsModal />
+      <div style={{ width: "100%", marginTop: "20px" }}>
+        <AdminLiquidsList setIsChecked={setIsChecked} />
+      </div>
+    </Wrapper>
+  );
 };
 
 export default AdminPanel;
