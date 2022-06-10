@@ -19,6 +19,11 @@ const AlertDialog = ({ handleDeleteLiquid }) => {
     setOpen(false);
   };
 
+  const handleAccept = () => {
+    handleClose();
+    handleDeleteLiquid();
+  };
+
   return (
     <>
       <Button variant="contained" color="error" onClick={handleClickOpen}>
@@ -40,11 +45,7 @@ const AlertDialog = ({ handleDeleteLiquid }) => {
           <Button onClick={handleClose} autoFocus variant="outlined">
             No
           </Button>
-          <Button
-            onClick={handleDeleteLiquid}
-            variant="contained"
-            color="error"
-          >
+          <Button onClick={handleAccept} variant="contained" color="error">
             Yes
           </Button>
         </DialogActions>

@@ -6,14 +6,16 @@ import {
   Checkbox,
   FormControlLabel,
 } from "@mui/material";
+import { useState } from "react";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { getLiquidsListFromDB } from "../../firebase/firestore";
 import { CostWrapper } from "./styles";
 
 const LiquidList = ({ setIsChecked }) => {
-  const dataList = useSelector((state) => state.liquid.liquidsList);
-
-  useEffect(() => {}, [dataList]);
+  const [liquidsList, setLiquidsList] = useState([]);
+  useEffect(() => {
+    getLiquidsListFromDB(setLiquidsList);
+  }, []);
 
   const handleCheckbox = () => (e) => {
     if (e.target?.checked) {
@@ -26,9 +28,9 @@ const LiquidList = ({ setIsChecked }) => {
   };
 
   const printList = () => {
-    return dataList.map((item) => {
+    return liquidsList.map((item) => {
       return (
-        <Accordion key={item.id}>
+        <Accordion key={item?.id}>
           <AccordionSummary
             expandIcon={<ExpandMore />}
             aria-label="Expand"
@@ -36,23 +38,23 @@ const LiquidList = ({ setIsChecked }) => {
             id="additional-actions1-header"
           >
             <FormControlLabel
-              aria-label={item.liquidName}
+              aria-label={item?.liquidName}
               onClick={(event) => event.stopPropagation()}
               onFocus={(event) => event.stopPropagation()}
-              control={<Checkbox onChange={handleCheckbox()} id={item.id} />}
-              label={item.liquidName.toUpperCase()}
+              control={<Checkbox onChange={handleCheckbox()} id={item?.id} />}
+              label={item?.liquidName.toUpperCase()}
             />
-            <CostWrapper>{item.liquidCost} руб.</CostWrapper>
+            <CostWrapper>{item?.liquidCost} руб.</CostWrapper>
           </AccordionSummary>
           <AccordionDetails sx={{ fontFamily: "roboto" }}>
-            {item.liquidDescription}
+            {item?.liquidDescription}
           </AccordionDetails>
         </Accordion>
       );
     });
   };
 
-  return <div>{printList()}</div>;
+  return <div>{liquidsList.length > 0 ? printList() : null}</div>;
 };
 
 export default LiquidList;

@@ -13,36 +13,38 @@ import {
   closeAdminModal,
   editLiquid,
 } from "../../store/slices/liquidsSlice";
+import { addLiquidInDB } from "../../firebase/firestore";
 
 const LiquidsModal = () => {
+  const modalIsOpen = useSelector((state) => state.liquid.modalIsOpen);
+  const modalState = useSelector((state) => state.liquid.modalState);
+  const currentModalId = useSelector((state) => state.liquid.currentModalId);
+  const dispatch = useDispatch();
+  const handleClose = () => dispatch(closeAdminModal());
+
   const initialValues = {
     liquidName: "",
     liquidDescription: "",
     liquidCost: "",
   };
 
-  const modalIsOpen = useSelector((state) => state.liquid.modalIsOpen);
-  const dispatch = useDispatch();
-  const handleClose = () => dispatch(closeAdminModal());
-  const modalState = useSelector((state) => state.liquid.modalState);
-  const currentModalId = useSelector((state) => state.liquid.currentModalId);
-
   const formik = useFormik({
     initialValues: initialValues,
     onSubmit: (values, actions) => {
       handleClose();
       if (modalState === "set") {
-        dispatch(addLiquid({ id: uuidv4(), ...values }));
+        const resultObj = { id: uuidv4(), ...values };
+        dispatch(addLiquid(resultObj));
+        addLiquidInDB(resultObj);
         actions.resetForm({
           values: initialValues,
         });
       } else if (modalState === "edit") {
         const setExistVal = () => {
           let temp = {};
-          const { liquidCost, liquidDescription, liquidName } = values;
-          if (liquidCost) temp = { ...temp, liquidCost };
-          if (liquidDescription) temp = { ...temp, liquidDescription };
-          if (liquidName) temp = { ...temp, liquidName };
+          for (const key in values) {
+            if (values[key]) temp = { ...temp, ...{ [key]: values[key] } };
+          }
           return temp;
         };
         const val = setExistVal();

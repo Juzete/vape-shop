@@ -102,7 +102,7 @@ const UserModal = () => {
           <form onSubmit={formik.handleSubmit}>
             <FieldWrapper>
               <FormLabel htmlFor="userName" sx={{ m: 0, p: 0 }}>
-                Имя &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                Имя &nbsp; &nbsp; &nbsp; &nbsp;
               </FormLabel>
               <TextField
                 id="userName"
@@ -131,7 +131,9 @@ const UserModal = () => {
             </FieldWrapper>
             <FieldWrapper>
               <div>
-                <FormLabel htmlFor="userVk">Vk</FormLabel>
+                <FormLabel htmlFor="userVk">
+                  Vk &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                </FormLabel>
               </div>
               <div>
                 <TextField

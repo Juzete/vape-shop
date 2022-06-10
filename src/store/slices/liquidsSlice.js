@@ -14,6 +14,9 @@ export const liquidSlice = createSlice({
     addLiquid: (state, action) => {
       state.liquidsList.push(action.payload);
     },
+    setLiquidsList: (state, action) => {
+      state.liquidsList = action.payload;
+    },
     openAdminModal: (state, action) => {
       state.modalIsOpen = true;
       state.modalState = action.payload;
@@ -50,6 +53,7 @@ export const {
   deleteLiquid,
   editLiquid,
   setCurrentModalId,
+  setLiquidsList,
 } = liquidSlice.actions;
 
 export default liquidSlice.reducer;

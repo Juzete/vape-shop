@@ -1,5 +1,4 @@
 import { useDispatch } from "react-redux";
-
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { setUser } from "../../store/slices/userSlice";

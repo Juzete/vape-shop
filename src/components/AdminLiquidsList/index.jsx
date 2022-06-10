@@ -7,9 +7,10 @@ import {
   Checkbox,
   FormControlLabel,
 } from "@mui/material";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import { getLiquidsListFromDB } from "../../firebase/firestore";
 import {
   openAdminModal,
   setCurrentModalId,
@@ -18,7 +19,12 @@ import { CostWrapper, EditButtonWrapper } from "./styles";
 
 const AdminLiquidsList = ({ setIsChecked }) => {
   const dataList = useSelector((state) => state.liquid.liquidsList);
+  const [liquidsList, setLiquidsList] = useState([]);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    getLiquidsListFromDB(setLiquidsList);
+  }, []);
 
   useEffect(() => {}, [dataList]);
 
@@ -38,7 +44,7 @@ const AdminLiquidsList = ({ setIsChecked }) => {
   };
 
   const printList = () => {
-    return dataList.map((item) => {
+    return liquidsList.map((item) => {
       return (
         <Accordion key={item.id}>
           <AccordionSummary
