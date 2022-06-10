@@ -10,7 +10,10 @@ import {
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { openModal, setCurrentModalId } from "../../store/slices/liquidsSlice";
+import {
+  openAdminModal,
+  setCurrentModalId,
+} from "../../store/slices/liquidsSlice";
 import { CostWrapper, EditButtonWrapper } from "./styles";
 
 const AdminLiquidsList = ({ setIsChecked }) => {
@@ -30,7 +33,7 @@ const AdminLiquidsList = ({ setIsChecked }) => {
   };
 
   const handleEditClick = () => (e) => {
-    dispatch(openModal("edit"));
+    dispatch(openAdminModal("edit"));
     dispatch(setCurrentModalId(e.target.id));
   };
 

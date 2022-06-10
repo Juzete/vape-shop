@@ -4,6 +4,9 @@ const initialState = {
   email: null,
   token: null,
   id: null,
+  modalIsOpen: false,
+  order: {},
+  checkedPositions: [],
 };
 
 const userSlice = createSlice({
@@ -20,9 +23,30 @@ const userSlice = createSlice({
       state.token = null;
       state.id = null;
     },
+    openUserModal: (state) => {
+      state.modalIsOpen = true;
+    },
+    closeUserModal: (state) => {
+      state.modalIsOpen = false;
+      state.modalState = "";
+      state.currentModalId = "";
+    },
+    addOrder: (state, action) => {
+      state.order = action.payload;
+    },
+    setCheckedPositions: (state, action) => {
+      state.checkedPositions = action.payload;
+    },
   },
 });
 
-export const { setUser, removeUser } = userSlice.actions;
+export const {
+  setUser,
+  removeUser,
+  openUserModal,
+  closeUserModal,
+  addOrder,
+  setCheckedPositions,
+} = userSlice.actions;
 
 export default userSlice.reducer;

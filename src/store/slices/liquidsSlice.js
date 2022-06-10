@@ -14,14 +14,17 @@ export const liquidSlice = createSlice({
     addLiquid: (state, action) => {
       state.liquidsList.push(action.payload);
     },
-    openModal: (state, action) => {
+    openAdminModal: (state, action) => {
       state.modalIsOpen = true;
       state.modalState = action.payload;
     },
-    closeModal: (state) => {
+    closeAdminModal: (state) => {
       state.modalIsOpen = false;
       state.modalState = "";
       state.currentModalId = "";
+    },
+    setCurrentModalId: (state, action) => {
+      state.currentModalId = action.payload;
     },
     deleteLiquid: (state, action) => {
       state.liquidsList = state.liquidsList.filter(
@@ -32,22 +35,18 @@ export const liquidSlice = createSlice({
       const liquidIndex = state.liquidsList.findIndex(
         (item) => item.id === action.payload.id
       );
-      console.log(action.payload);
       state.liquidsList[liquidIndex] = {
         ...state.liquidsList[liquidIndex],
         ...action.payload,
       };
-    },
-    setCurrentModalId: (state, action) => {
-      state.currentModalId = action.payload;
     },
   },
 });
 
 export const {
   addLiquid,
-  openModal,
-  closeModal,
+  openAdminModal,
+  closeAdminModal,
   deleteLiquid,
   editLiquid,
   setCurrentModalId,

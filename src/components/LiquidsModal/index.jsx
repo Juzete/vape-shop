@@ -10,7 +10,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useSelector } from "react-redux";
 import {
   addLiquid,
-  closeModal,
+  closeAdminModal,
   editLiquid,
 } from "../../store/slices/liquidsSlice";
 
@@ -23,7 +23,7 @@ const LiquidsModal = () => {
 
   const modalIsOpen = useSelector((state) => state.liquid.modalIsOpen);
   const dispatch = useDispatch();
-  const handleClose = () => dispatch(closeModal());
+  const handleClose = () => dispatch(closeAdminModal());
   const modalState = useSelector((state) => state.liquid.modalState);
   const currentModalId = useSelector((state) => state.liquid.currentModalId);
 
@@ -46,7 +46,6 @@ const LiquidsModal = () => {
           return temp;
         };
         const val = setExistVal();
-        console.log(val, val);
         const result = {
           id: currentModalId,
           ...val,
@@ -75,12 +74,14 @@ const LiquidsModal = () => {
             textAlign="center"
             mb="20px"
           >
-            LIQUID INFO
+            {modalState === "edit" ? "EDIT" : "ADD"}
           </Typography>
           <Divider sx={{ mb: 5 }} />
           <form onSubmit={formik.handleSubmit}>
             <FieldWrapper>
-              <FormLabel htmlFor="liquidName">Liquid Name</FormLabel>
+              <FormLabel htmlFor="liquidName" sx={{ m: 0, p: 0 }}>
+                Name &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+              </FormLabel>
               <TextField
                 id="liquidName"
                 name="liquidName"
@@ -91,20 +92,25 @@ const LiquidsModal = () => {
               />
             </FieldWrapper>
             <FieldWrapper>
-              <FormLabel htmlFor="liquidDescription">
-                Liquid Description
-              </FormLabel>
-              <TextField
-                id="liquidDescription"
-                label="Liquid Description"
-                name="liquidDescription"
-                variant="outlined"
-                value={formik.values.liquidDescription}
-                onChange={formik.handleChange}
-              />
+              <div>
+                <FormLabel htmlFor="liquidDescription">Description</FormLabel>
+              </div>
+
+              <div>
+                <TextField
+                  id="liquidDescription"
+                  label="Liquid Description"
+                  name="liquidDescription"
+                  variant="outlined"
+                  value={formik.values.liquidDescription}
+                  onChange={formik.handleChange}
+                />
+              </div>
             </FieldWrapper>
             <FieldWrapper>
-              <FormLabel htmlFor="liquidCost">Liquid Cost</FormLabel>
+              <FormLabel htmlFor="liquidCost">
+                Cost &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+              </FormLabel>
               <TextField
                 id="liquidCost"
                 label="Liquid Cost"
@@ -118,7 +124,7 @@ const LiquidsModal = () => {
               type="submit"
               variant="contained"
               color="success"
-              sx={{ ml: 38 }}
+              sx={{ ml: 1 }}
             >
               Submit
             </Button>

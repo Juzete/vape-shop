@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 import AlertDialog from "../AlertDialog";
 import { Title, Wrapper } from "./styles";
 import AdminLiquidsList from "../AdminLiquidsList";
-import { deleteLiquid, openModal } from "../../store/slices/liquidsSlice";
+import { deleteLiquid, openAdminModal } from "../../store/slices/liquidsSlice";
 import LiquidsModal from "../LiquidsModal";
 
 const AdminPanel = () => {
@@ -22,7 +22,7 @@ const AdminPanel = () => {
     if (!auth.isAuth) navigate("/login");
   }, []);
 
-  const handleOpenModal = () => dispatch(openModal("set"));
+  const handleOpenAdminModal = () => dispatch(openAdminModal("set"));
   const handleDeleteLiquid = () => dispatch(deleteLiquid(isChecked));
 
   return (
@@ -33,7 +33,11 @@ const AdminPanel = () => {
         </Typography>
       </Title>
       <div>
-        <Button variant="contained" onClick={handleOpenModal} sx={{ mr: 3 }}>
+        <Button
+          variant="contained"
+          onClick={handleOpenAdminModal}
+          sx={{ mr: 3 }}
+        >
           Add liquid
         </Button>
         {dataList.length > 0 && isChecked.length > 0 ? (
